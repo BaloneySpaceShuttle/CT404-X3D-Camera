@@ -1,0 +1,180 @@
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full'
+	version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+	<Scene DEF='scene'>
+       <Background skyColor='0.96 0.875 0.8 1 0.65 1 1 1 1' groundColor='0.96 0.875'/>
+       <Group>
+            <!-- View Point -->
+            <Viewpoint description='Interactive Camera Model' position='0 1 10'/>
+            
+            <!-- CAMERA BODY -->
+            <Transform DEF='Camera_Body' translation='0 0 0'>
+                <Shape>
+                    <Appearance>
+                        <Material diffuseColor='1 0 0' />
+                    </Appearance>
+                    <Box size='3.5 2 1.5'/>
+                </Shape>
+            </Transform>
+            
+            <!-- VIEW FINDER -->
+            <Transform DEF='Camera_Viewfinder' translation='0 0.05 -0.8'>
+                <Shape>
+                    <Appearance>
+                        <ImageTexture url='snowman.jpg'/>
+                    </Appearance>
+                    <Box size='2.4 1.25 0.1'/>
+                </Shape>
+            </Transform>
+          
+            <!-- VIEW FINDER FRAME -->
+            <Transform DEF='Viewfinder_Frame' translation='-1.4 -0.85 -0.75' rotation='1 0 0 -1.57'>
+              <Shape>
+                <Extrusion convex='false' crossSection="0.0 0.0, 0.0 1.74, 1.449 1.74, 1.449 1.45, 0.29 1.45, 0.29 0.29, 2.61 0.29, 2.61 1.45, 1.45 1.45, 1.45 1.74, 2.9 1.74, 2.9 0.0, 0.0 0.0" 
+                    spine='0 0 0 0 0.2 0'>
+                </Extrusion>
+                <Appearance>
+                  <Material diffuseColor='0.8 0.8 0.3'/>
+                </Appearance>
+              </Shape>
+            </Transform>
+            
+            <!-- CAMERA LENS 1 -->
+            <Transform DEF='Camera_Lens1' translation='0 0 1.6' rotation='1 0 0 -1.6'>
+                <Shape>
+                <Appearance>
+                    <PixelTexture DEF='ColourTexture1' image='2 4 3 0xff0000 0xffff00 0x007700 0xff0077 0x0000ff 0xff7700 0x00ff77 0x888888' repeatS='false' repeatT='false'/>
+                </Appearance>
+                <Cylinder height='1.25' radius='0.7'/>
+                </Shape>
+                <TouchSensor DEF='Sensor_Camera_Lens1' description='click to extend lens'/>
+                <TimeSensor DEF='Sensor_Time_Lens1' cycleInterval='1.5'/>
+                <PositionInterpolator DEF='Camera_Lens1_Translation' key='0 0.2 1' keyValue='0 0 1.6  0 0 1.4 0 0 1.6'/>
+            </Transform>
+            
+            <!-- CAMERA LENS 2 -->
+            <Transform DEF='Camera_Lens2' translation='0 0 1' rotation='1 0 0 -1.6'>
+                <Shape>
+                <Appearance>
+                    <Material diffuseColor='0 1 0'/>
+                </Appearance>
+                <Cylinder height='1' radius='0.6'/>
+                </Shape>
+            </Transform>
+            
+            <!-- CAMERA LENS 3 -->
+            <Transform DEF='Camera_Lens3' translation='0 0 1.8' rotation='1 0 0 -1.6'>
+                <Shape>
+                <Appearance>
+                    <Material diffuseColor='1 1 0.5' transparency='0.04'/>
+                </Appearance>
+                <Cylinder height='1.25' radius='0.5'/>
+                </Shape>
+                <TimeSensor DEF='Sensor_Time_Lens3' cycleInterval='1.7'/>
+                <PositionInterpolator DEF='Camera_Lens3_Translation' key='0 0.2 1' keyValue='0 0 1.8  0 0 2.4 0 0 1.8'/>
+            </Transform>
+		
+            <!-- CAMERA  SHUTTER -->
+            <Transform DEF='Camera_Shutter' translation='-1.3 1.1 0.2'>
+                <Shape>
+                <Appearance>
+                    <Material diffuseColor='255 255 255'/>
+                </Appearance>
+                <Cylinder height='0.4' radius='0.3'/>
+                </Shape>
+                <TouchSensor DEF='Sensor_Illumunation' description='click to turn flash bulb'/>
+                <Script DEF='Illuminate_Bulb'>
+                    <field name='value' type='SFBool' accessType='outputOnly'/>
+                    <field name='flash_bulb' type='SFTime' accessType='inputOnly'/>
+                    <![CDATA[
+
+                                  
+                    ecmascript:
+                    function flash_bulb() {
+                     value = false;
+                    }
+
+                                
+
+                    ]]>
+                </Script>
+             <TouchSensor DEF='Sensor_ShutterPush' description='click to extend lens'/>
+             <TimeSensor DEF='Sensor_Shutter' cycleInterval='1'/>
+             <PositionInterpolator DEF='Shutter_Translation' key='0 0.2 1' keyValue='-1.3 1.1 0.2  -1.3 0.9 0.2  -1.3 1.1 0.2'/>
+        </Transform>
+            
+            <!-- CAMERA FLASH -->
+            <Transform DEF='Camera_Flash' translation='1.3 0.5 0.8'>
+                <Shape>
+                <Appearance>
+                    <Material DEF='Bulb_Colour' diffuseColor='0 204 204' transparency='0.4' />
+                </Appearance>
+                <Sphere radius='0.4'/>
+                </Shape>
+                <TimeSensor DEF='clock1' cycleInterval='0.5'/>
+                <ColorInterpolator DEF='colorpath1' key='0 1' keyValue='0.4 0.4 0.4 1 1 0'/>
+                <ColorInterpolator DEF='colorpath2' key='0 1' keyValue='1 1 0 0.4 0.4 0.4'/>
+                <TimeSensor DEF='clock2' cycleInterval='0.5'/>
+                <SpotLight DEF='light' ambientIntensity='0.8' color='1 1 0' cutOffAngle='.785398' direction='0 -1 0.7' on='false' radius='20'/>
+                    
+            </Transform>
+            
+            <!-- CAMERA FILM ADVANCE -->
+            <Transform DEF='Camera_FilmAdvance' center='-0.2 0 0' translation='-1.4 1.1 -0.65'>
+              <Shape>
+                <Box size='0.55 0.2 0.08'/>
+                <Appearance>
+                  <Material diffuseColor='0 1 0'/>
+                </Appearance>
+              </Shape>
+               <TouchSensor DEF='Sensor_FilmAdvance' description='click to advance film'/>
+               <TimeSensor DEF='Sensor_Film1' cycleInterval='1.2'/>
+               <OrientationInterpolator DEF='Spinner1' key='0 0.5 1' keyValue='0 1 0 0 0 1 0 3.14 0 1 0 6.28'/>
+            </Transform>
+            
+            <!-- CAMERA FILM ADVANCE PILLAR  -->
+             <Transform DEF='Camera_FilmAdvance_Pillar1' translation='-1.6 1.1 -0.65'>
+              <Shape>
+                <Cylinder height='0.25' radius='0.1'/>
+                <Appearance>
+                  <Material diffuseColor='0 1 0'/>
+                </Appearance>
+              </Shape>
+               <TouchSensor DEF='Sensor_FilmAdvance2' description='click to advance film'/>
+               <TimeSensor DEF='Sensor_Film2' cycleInterval='2'/>
+               <OrientationInterpolator DEF='Spinner2' key='0 0.5 1' keyValue='0 1 0 0 0 1 0 3.14 0 1 0 6.28'/>
+            </Transform>
+        
+        </Group>
+        <!-- flash bulb-->
+        <ROUTE fromNode='Sensor_Illumunation' fromField='touchTime' toNode='clock2' toField='set_startTime'/>
+        <ROUTE fromNode='clock2' fromField='fraction_changed' toNode='colorpath2' toField='set_fraction'/>
+        <ROUTE fromNode='colorpath2' fromField='value_changed' toNode='Bulb_Colour' toField='set_emissiveColor'/>
+        <ROUTE fromNode='Sensor_Illumunation' fromField='touchTime' toNode='Illuminate_Bulb' toField='flash_bulb'/>
+        <ROUTE fromNode='Illuminate_Bulb' fromField='value' toNode='light' toField='set_on'/>
+        
+        <!-- cock film advance-->
+        <ROUTE fromField='touchTime' fromNode='Sensor_FilmAdvance' toField='startTime' toNode='Sensor_Film1'/>
+        <ROUTE fromField='fraction_changed' fromNode='Sensor_Film1' toField='set_fraction' toNode='Spinner1'/>
+        <ROUTE fromField='value_changed' fromNode='Spinner1' toField='rotation' toNode='Camera_FilmAdvance'/>
+        
+        <!-- cock film advance (on pillar click) -->
+        <ROUTE fromField='touchTime' fromNode='Sensor_FilmAdvance2' toField='startTime' toNode='Sensor_Film2'/>
+        <ROUTE fromField='fraction_changed' fromNode='Sensor_Film2' toField='set_fraction' toNode='Spinner2'/>
+        <ROUTE fromField='value_changed' fromNode='Spinner2' toField='rotation' toNode='Camera_FilmAdvance'/>
+        
+        <!-- push shutter button-->
+        <ROUTE fromField='touchTime' fromNode='Sensor_ShutterPush' toField='startTime' toNode='Sensor_Shutter'/>
+        <ROUTE fromField='fraction_changed' fromNode='Sensor_Shutter' toField='set_fraction' toNode='Shutter_Translation'/>
+        <ROUTE fromField='value_changed' fromNode='Shutter_Translation' toField='translation' toNode='Camera_Shutter'/>
+        
+        <!-- camera lens 1 slide -->
+        <ROUTE fromField='touchTime' fromNode='Sensor_Camera_Lens1' toField='startTime' toNode='Sensor_Time_Lens1'/>
+        <ROUTE fromField='fraction_changed' fromNode='Sensor_Time_Lens1' toField='set_fraction' toNode='Camera_Lens1_Translation'/>
+        <ROUTE fromField='value_changed' fromNode='Camera_Lens1_Translation' toField='translation' toNode='Camera_Lens1'/>
+        
+        <!-- camera lens 3 slide -->
+        <ROUTE fromField='touchTime' fromNode='Sensor_Camera_Lens1' toField='startTime' toNode='Sensor_Time_Lens3'/>
+        <ROUTE fromField='fraction_changed' fromNode='Sensor_Time_Lens3' toField='set_fraction' toNode='Camera_Lens3_Translation'/>
+        <ROUTE fromField='value_changed' fromNode='Camera_Lens3_Translation' toField='translation' toNode='Camera_Lens3'/>
+	</Scene>
+</X3D>
